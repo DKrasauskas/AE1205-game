@@ -12,8 +12,13 @@ p2_texture = py.transform.scale_by(py.image.load("textures/character_walk.png").
 p2_walk_texture = py.transform.scale_by(py.image.load("textures/Character.png").convert_alpha(), 3.2)
 p2_flip_texture = py.transform.scale_by(py.image.load("textures/character_flipped.png").convert_alpha(), .1)
 obstacle =  py.transform.scale_by(py.image.load("textures/Hurdle.png").convert_alpha(), 7.0)
+obstacle2 = py.transform.scale_by(py.image.load("textures/rock.png").convert_alpha(), .10)
 start_button =  py.transform.scale_by(py.image.load("textures/start_button.png").convert_alpha(), .1)
 caption = py.transform.scale_by(py.image.load("textures/title.png").convert_alpha(), .2)
+grailTX = py.transform.scale_by(py.image.load("textures/holy_grail.png").convert_alpha(), .2)
+restart =  py.transform.scale_by(py.image.load("textures/restart_button.png").convert_alpha(), .2)
+wn =  py.transform.scale_by(py.image.load("textures/win.png").convert_alpha(), .2)
+sign = py.transform.scale_by(py.image.load("textures/olympic_sign.png").convert_alpha(), .2)
 class Character:
     def __init__(self, v) -> None:
         self.hitbox = py.Rect(200, 200, 400, 400)
@@ -36,6 +41,7 @@ class Character:
         self.y += self.vy 
         if(self.x - scr_x > -400 and self.x - scr_x < SCR_HEIGHT):
             self.hitbox.update(self.x - scr_x, self.y, 200, 80)
+            print(self.x)
             self.render = True
         else:
             self.hitbox.update(-1000, self.y, 20, 20)
@@ -44,7 +50,7 @@ class Character:
         if self.y >= FLOOR_HEIGHT and self.vy >= 0:
             self.y = FLOOR_HEIGHT
             self.vy = 0
-        if self.hitbox.x >= SCR_WIDTH:
+        if self.hitbox.x >= SCR_HEIGHT:
             self.vx = -self.vx
         if self.hitbox.x <= 10:
             self.vx = self.v
@@ -58,7 +64,13 @@ class Character:
          
 
 obstacles = []
-
+for x in range(1, 200):
+    chr = Character(0)
+    chr.x = x * (1000 + (abs(rand.random())) * 500)
+    chr.hitbox.update(600, 600, 600, 600)
+    chr.texture = obstacle2
+    chr.y = FLOOR_HEIGHT + 50
+    obstacles.append(chr)
 for x in range(1, 200):
     chr = Character(0)
     chr.x = x * (1000 + (abs(rand.random())) * 500)
@@ -66,32 +78,34 @@ for x in range(1, 200):
     chr.texture = obstacle
     chr.y = FLOOR_HEIGHT
     obstacles.append(chr)
-char1 = Character(800)
-char1.texture = p1_texture
-char1.texture_walk = p1_walk_texture
-char1.x = 100
-char1.y = 700
-char2 = Character(800)
-char2.texture = p2_texture
-char2.texture_walk = p2_walk_texture
-char2.texture_flip = p2_flip_texture
-char2.x = 200
-char2.y = 700
 
+chr = Character(0)
+chr.x = 100
+chr.y = 0
+chr.hitbox.update(600, 600, 600, 600)
+chr.texture = sign
+obstacles.append(chr)
 def handle_movementP1(event, character):
-    if event.type == py.KEYDOWN:
-                if event.key == py.K_LEFT:
-                    character.vx = -character.v if character.vx == 0 else  0
-                if event.key == py.K_RIGHT:
-                   character.vx = character.v if character.vx == 0 else  0
-                if event.key == py.K_UP:
-                    character.jump()
+    keys = py.key.get_pressed()
+    if keys[py.K_LEFT]:
+        character.vx = -character.v
+    else:
+        if keys[py.K_RIGHT]:
+            character.vx = character.v
+        else:
+            character.vx = 0
+    if  keys[py.K_UP]:
+        character.jump()
+
 def handle_movementP2(event, character):
-    if event.type == py.KEYDOWN:
-                if event.key == py.K_a:
-                    character.vx = -character.v if character.vx == 0 else  0
-                if event.key == py.K_d:
-                    character.vx = character.v
-                if event.key == py.K_w:
-                    character.jump()
+    keys = py.key.get_pressed()
+    if keys[py.K_d]:
+        character.vx = character.v
+    else:
+        if keys[py.K_a]:
+            character.vx = -character.v
+        else:
+            character.vx = 0
+    if  keys[py.K_w]:
+        character.jump()
 

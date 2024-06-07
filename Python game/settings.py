@@ -1,8 +1,9 @@
 import pygame as py
 
-SCR_WIDTH = 800
+SCR_WIDTH = 700
 SCR_HEIGHT = 1200
-FLOOR_HEIGHT = 600
+FLOOR_HEIGHT = 500
+vel = 800
 
 player1 = (
 py.K_LEFT, 
