@@ -19,7 +19,7 @@ py.mixer.music.play(0, 0, 12000)
 begin = tm.time()
 prev = tm.time()
 
-initial.startscreen(window, char1, char2, start_button)
+initial.startscreen(window, char1, char2, start_button, caption)
 py.mixer.music.fadeout(1000)
 RUN = True
 py.mixer.music.load("audio/gasgas.mp3")
@@ -71,6 +71,9 @@ while RUN:
     if char1.x > 23000:
         RUN = False
         victor = char1
+    if char2.x > 23000:
+        RUN = False
+        victor = char2
     py.display.update()
     py.display.flip()
     framecount += 1

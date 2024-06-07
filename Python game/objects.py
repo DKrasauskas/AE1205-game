@@ -13,6 +13,7 @@ p2_walk_texture = py.transform.scale_by(py.image.load("textures/Character.png").
 p2_flip_texture = py.transform.scale_by(py.image.load("textures/character_flipped.png").convert_alpha(), .1)
 obstacle =  py.transform.scale_by(py.image.load("textures/Hurdle.png").convert_alpha(), 7.0)
 start_button =  py.transform.scale_by(py.image.load("textures/start_button.png").convert_alpha(), .1)
+caption = py.transform.scale_by(py.image.load("textures/title.png").convert_alpha(), .2)
 class Character:
     def __init__(self, v) -> None:
         self.hitbox = py.Rect(200, 200, 400, 400)
