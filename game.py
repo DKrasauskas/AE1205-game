@@ -11,7 +11,7 @@ py.init()
 window = py.display.set_mode((SCR_HEIGHT, SCR_WIDTH))
 from objects import *
 py.mixer.init()
-py.mixer.music.load("audio.mp3")
+py.mixer.music.load("audio/audio.mp3")
 py.mixer.music.set_volume(50)
 py.mixer.music.play(0, 0, 12000)
 
@@ -19,18 +19,20 @@ py.mixer.music.play(0, 0, 12000)
 begin = tm.time()
 prev = tm.time()
 
-initial.startscreen(window, char1, char2)
+initial.startscreen(window, char1, char2, start_button)
 py.mixer.music.fadeout(1000)
 RUN = True
-py.mixer.music.load("gasgas.mp3")
-py.mixer.music.set_volume(50)
-py.mixer.Channel(0).play(py.mixer.Sound('gasgas.mp3'), 100, 0, 10000)
+py.mixer.music.load("audio/gasgas.mp3")
+py.mixer.Channel(0).play(py.mixer.Sound('audio/gasgas.mp3'), 100, 0, 10000)
+py.mixer.Channel(0).set_volume(10)
 
 scr_x = 0
 scr_y = 0
 
 mov = 0
 framecount = 0
+
+victor = None
 while RUN:
     tprev = begin
     begin = tm.time()
@@ -66,9 +68,32 @@ while RUN:
              char1.vx = 0
          if char2.hitbox.colliderect(x.hitbox):
              char2.vx = 0
+    if char1.x > 23000:
+        RUN = False
+        victor = char1
     py.display.update()
     py.display.flip()
     framecount += 1
     if framecount == 100:
         framecount = 0
-
+RUN = True
+winner = py.Rect(SCR_HEIGHT/2 - 50, SCR_WIDTH/2 - 50, 100, 100)
+py.mixer.Channel(0).play(py.mixer.Sound('audio/victory.mp3'), 100, 0, 10000)
+while RUN:
+    tprev = begin
+    begin = tm.time()
+    window.fill((0 ,0, 0))
+    for x in py.event.get():
+        if x.type == py.QUIT:
+            RUN = False
+    if framecount < 200:
+        window.fill((255, 125, 125))
+    else:
+        window.fill((0, 125, 125))
+    window.blit(victor.texture, winner)
+   # py.draw.rect(window, (255, 255, 0), winner)
+    py.display.update()
+    py.display.flip()
+    framecount += 1
+    if framecount == 400:
+        framecount = 0

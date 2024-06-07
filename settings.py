@@ -1,7 +1,7 @@
 import pygame as py
 
 SCR_WIDTH = 800
-SCR_HEIGHT = 800
+SCR_HEIGHT = 1200
 FLOOR_HEIGHT = 600
 
 player1 = (
